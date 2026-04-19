@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Products — GreenByte Tech Co</title>
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+.products-section { padding:60px 6% 120px; }
+
+/* ── FILTER TABS ── */
+.filter-row { display:flex; gap:10px; margin-bottom:52px; flex-wrap:wrap; }
+.filter-btn {
+  font-family:'JetBrains Mono',monospace; font-size:0.67rem;
+  letter-spacing:0.09em; text-transform:uppercase;
+  padding:8px 18px; border-radius:100px;
+  border:1px solid var(--border-s); background:transparent;
+  color:var(--muted); cursor:pointer; transition:all 0.2s;
+}
+.filter-btn:hover { border-color:var(--blue-border); color:var(--blue-light); }
+.filter-btn.active {
+  background:var(--blue-dim); border-color:var(--blue-border); color:var(--blue-light);
+}
+
+/* ── CARDS GRID ── */
+.cards-grid {
+  display:grid; grid-template-columns:repeat(2,1fr); gap:20px;
+  position:relative;
+}
+
+/* ── PRODUCT CARD ── */
+.prod-card {
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:20px; padding:36px;
+  transition:opacity 0.35s ease, transform 0.35s ease, border-color 0.22s, box-shadow 0.22s;
+  position:relative; overflow:hidden;
+}
+.prod-card::before {
+  content:''; position:absolute; inset:0; border-radius:20px;
+  background:linear-gradient(135deg, rgba(45,125,210,0.06) 0%, transparent 60%);
+  opacity:0; transition:opacity 0.3s;
+}
+.prod-card:hover { border-color:var(--blue-border); box-shadow:0 20px 48px rgba(45,125,210,0.12); }
+.prod-card:hover::before { opacity:1; }
+
+/* hide/show via filter */
+.prod-card.hidden {
+  opacity:0; transform:translateY(16px) scale(0.97);
+  pointer-events:none; position:absolute; visibility:hidden;
+}
+.prod-card.visible {
+  opacity:1; transform:translateY(0) scale(1);
+  pointer-events:auto; position:relative; visibility:visible;
+}
+
+/* featured spans full width */
+.prod-card.featured { grid-column:span 2; }
+.prod-card.featured .card-inner { display:grid; grid-template-columns:1fr 1fr; gap:44px; align-items:start; }
+
+/* ── CARD INTERNALS ── */
+.card-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; }
+.card-domain {
+  font-family:'JetBrains Mono',monospace; font-size:0.62rem;
+  color:var(--muted); letter-spacing:0.07em; text-transform:uppercase;
+}
+
+.card-icon {
+  width:52px; height:52px; border-radius:13px;
+  background:var(--blue-dim); border:1px solid var(--blue-border);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.5rem; margin-bottom:18px; overflow:hidden;
+  /* ╔═══════════════════════════════════════╗
+     ║ Replace emoji with real product logo: ║
+     ║ <img src="assets/agrolingo-icon.png"> ║
+     ╚═══════════════════════════════════════╝ */
+}
+.card-icon img { width:36px; height:36px; object-fit:contain; }
+
+.card-name {
+  font-family:'Syne',sans-serif; font-weight:800;
+  font-size:1.35rem; color:var(--white); letter-spacing:-0.02em; margin-bottom:10px;
+}
+.card-desc { font-size:0.87rem; color:var(--muted); line-height:1.8; font-weight:300; margin-bottom:22px; }
+
+.card-features { display:flex; flex-direction:column; gap:8px; margin-bottom:24px; }
+.feat-item {
+  display:flex; align-items:flex-start; gap:10px;
+  font-size:0.81rem; color:var(--muted); font-weight:300;
+}
+.feat-item::before {
+  content:'→'; color:var(--teal); font-size:0.73rem; flex-shrink:0; margin-top:2px;
+}
+
+.card-tech { display:flex; flex-wrap:wrap; gap:7px; }
+.tech-tag {
+  font-family:'JetBrains Mono',monospace; font-size:0.61rem;
+  color:var(--muted); background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.07);
+  padding:4px 9px; border-radius:4px; letter-spacing:0.04em;
+}
+
+/* featured right side */
+.featured-stats { display:flex; flex-direction:column; gap:12px; }
+.feat-stat {
+  background:rgba(0,0,0,0.25); border:1px solid var(--border);
+  border-radius:12px; padding:18px 22px;
+}
+.feat-stat-num {
+  font-family:'Syne',sans-serif; font-weight:800;
+  font-size:1.7rem; color:var(--white); letter-spacing:-0.03em; margin-bottom:4px;
+}
+.feat-stat-num small { font-size:0.9rem; color:var(--teal); }
+.feat-stat-lbl { font-size:0.74rem; color:var(--muted); font-weight:300; }
+
+.flagship-badge {
+  display:inline-flex; align-items:center; gap:8px;
+  background:rgba(245,166,35,0.08); border:1px solid rgba(245,166,35,0.2);
+  padding:6px 14px; border-radius:6px;
+  font-family:'JetBrains Mono',monospace; font-size:0.63rem;
+  color:var(--amber); letter-spacing:0.08em; margin-bottom:22px;
+}
+
+/* card link */
+.card-link {
+  display:inline-flex; align-items:center; gap:6px;
+  font-size:0.8rem; color:var(--blue-light); font-weight:500;
+  text-decoration:none; margin-top:20px; transition:gap 0.2s;
+}
+.card-link:hover { gap:10px; }
+
+/* wide card (studylink) */
+.prod-card.wide { grid-column:span 2; }
+.prod-card.wide .card-inner { display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:start; }
+
+/* empty state */
+.no-results {
+  grid-column:span 2; text-align:center; padding:80px 0;
+  font-size:0.9rem; color:var(--muted); display:none;
+}
+.no-results.show { display:block; }
+
+@media (max-width:900px) {
+  .cards-grid { grid-template-columns:1fr; }
+  .prod-card.featured, .prod-card.wide { grid-column:span 1; }
+  .prod-card.featured .card-inner, .prod-card.wide .card-inner { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">
+    <img src="assets/logo.png" alt="GreenByte" width="32" height="32" style="border-radius:7px"
+         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <svg style="display:none" width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="7" fill="#111820"/><path d="M16 5.5C10.8 5.5 6.5 9.2 6.5 13.7C6.5 16.7 8.2 19.3 10.8 20.8V24.2L14.2 22.5C14.8 22.6 15.4 22.65 16 22.65C21.2 22.65 25.5 18.7 25.5 13.7C25.5 9.2 21.2 5.5 16 5.5Z" fill="#1A6B3C"/><circle cx="12" cy="13" r="1.4" fill="#00C9A7"/><circle cx="16" cy="11" r="1.4" fill="#00C9A7"/><circle cx="20" cy="13" r="1.4" fill="#00C9A7"/><line x1="12" y1="13" x2="16" y2="11" stroke="#00C9A7" stroke-width="0.8" opacity="0.5"/><line x1="16" y1="11" x2="20" y2="13" stroke="#00C9A7" stroke-width="0.8" opacity="0.5"/></svg>
+    <div><div class="logo-wordmark">Green<span>Byte</span></div><div class="logo-sub">Tech Co</div></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li>
+    <li><a href="products.html">Products</a></li><li><a href="founder.html">Founder</a></li><li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-right"><a href="contact.html" class="btn-primary btn-sm">Work With Us</a></div>
+  <button class="nav-burger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html" onclick="toggleMenu()">Home</a><a href="about.html" onclick="toggleMenu()">About</a>
+  <a href="products.html" onclick="toggleMenu()">Products</a><a href="founder.html" onclick="toggleMenu()">Founder</a>
+  <a href="contact.html" onclick="toggleMenu()">Contact</a>
+</div>
+
+<div class="page-hero">
+  <div class="page-hero-label">Our Products</div>
+  <h1>Built to solve<br><span>real problems.</span></h1>
+  <p>Five products. Three domains. One mission — use technology to solve Africa's most pressing challenges and compete globally.</p>
+</div>
+
+<section class="products-section">
+
+  <!-- FILTER TABS -->
+  <div class="filter-row">
+    <button class="filter-btn active" onclick="filterCards('all', this)">All Products</button>
+    <button class="filter-btn" onclick="filterCards('ai', this)">AI & AgriTech</button>
+    <button class="filter-btn" onclick="filterCards('blockchain', this)">Blockchain</button>
+    <button class="filter-btn" onclick="filterCards('edtech', this)">EdTech</button>
+    <button class="filter-btn" onclick="filterCards('live', this)">Live Now</button>
+    <button class="filter-btn" onclick="filterCards('building', this)">Building</button>
+  </div>
+
+  <div class="cards-grid" id="cardsGrid">
+
+    <!-- AGROLINGO — featured -->
+    <div class="prod-card featured visible" id="agrolingo" data-tags="ai building">
+      <div class="card-inner">
+        <div>
+          <div class="card-top">
+            <div class="prod-status s-building"><div class="s-dot"></div>Building</div>
+            <div class="card-domain">AgriTech · AI · NLP</div>
+          </div>
+          <div class="card-icon">
+            <img src="assets/agrolingo-icon.png" alt="AgroLingo AI">
+          </div>
+          <div class="card-desc">A multilingual AI assistant for smallholder farmers in Northern Nigeria — delivering real-time agricultural intelligence in Hausa and English, the farmer's own language.</div>
+          <div class="card-features">
+            <div class="feat-item">Hausa/English natural language processing</div>
+            <div class="feat-item">Crop disease diagnosis and treatment guidance</div>
+            <div class="feat-item">Real-time market prices and weather alerts</div>
+            <div class="feat-item">Runs on low-end devices and 2G connections</div>
+          </div>
+          <div class="card-tech">
+            <span class="tech-tag">Llama LLM</span><span class="tech-tag">Anthropic API</span>
+            <span class="tech-tag">Python</span><span class="tech-tag">React</span><span class="tech-tag">Hausa NLP</span>
+          </div>
+          <!-- ╔═══════════════════════════════════════════╗
+               ║ Replace # with your AgroLingo landing URL ║
+               ╚═══════════════════════════════════════════╝ -->
+          <a href="https://agrolingo.greenbyte.tech" target="_blank" class="card-link">Visit AgroLingo →</a>
+        </div>
+        <div>
+          <div class="flagship-badge">🏆 Flagship Product</div>
+          <div class="featured-stats">
+            <div class="feat-stat">
+              <div class="feat-stat-num">20<small>M+</small></div>
+              <div class="feat-stat-lbl">Smallholder farmers in Northern Nigeria</div>
+            </div>
+            <div class="feat-stat">
+              <div class="feat-stat-num">2<small> langs</small></div>
+              <div class="feat-stat-lbl">Hausa & English — native language first</div>
+            </div>
+            <div class="feat-stat">
+              <div class="feat-stat-num">$50<small>K</small></div>
+              <div class="feat-stat-lbl">AU Education Grant — actively applying</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AGROCHAINX -->
+    <div class="prod-card visible" id="agrochainx" data-tags="blockchain building">
+      <div class="card-top">
+        <div class="prod-status s-building"><div class="s-dot"></div>Building</div>
+        <div class="card-domain">Blockchain · Web3</div>
+      </div>
+      <div class="card-icon">
+    <img src="assets/agrochainx-icon.png" alt="AgroChainX">
+    </div>
+      <div class="card-desc">A blockchain-powered agricultural ecosystem for Africa — traceable, trusted, transparent from farm to consumer.</div>
+      <div class="card-features">
+        <div class="feat-item">Farm-to-consumer supply chain traceability</div>
+        <div class="feat-item">Farmer digital identity on-chain</div>
+        <div class="feat-item">Smart contract payments and escrow</div>
+        <div class="feat-item">AI-powered market intelligence layer</div>
+      </div>
+      <div class="card-tech">
+        <span class="tech-tag">Ethereum</span><span class="tech-tag">Solidity</span>
+        <span class="tech-tag">Polygon</span><span class="tech-tag">IPFS</span><span class="tech-tag">Flutter</span>
+      </div>
+    </div>
+
+    <!-- HIFZ MATE -->
+    <div class="prod-card visible" id="hifzmate" data-tags="edtech building">
+      <div class="card-top">
+        <div class="prod-status s-building"><div class="s-dot"></div>Building</div>
+        <div class="card-domain">EdTech · Mobile · AI</div>
+      </div>
+      <div class="card-icon">
+  <img src="assets/hifzmate-icon.png" alt="Hifz Mate">
+</div>
+      <div class="card-desc">An AI-powered Qur'an memorization app for students, schools, and madrasas globally — with voice recognition and Tajweed feedback.</div>
+      <div class="card-features">
+        <div class="feat-item">AI voice recognition for recitation accuracy</div>
+        <div class="feat-item">Spaced repetition memorization system</div>
+        <div class="feat-item">Tajweed rules feedback and correction</div>
+        <div class="feat-item">Freemium model — accessible to everyone</div>
+      </div>
+      <div class="card-tech">
+        <span class="tech-tag">Flutter</span><span class="tech-tag">Firebase</span>
+        <span class="tech-tag">Voice AI</span><span class="tech-tag">Dart</span>
+      </div>
+    </div>
+
+    <!-- SKILLMINT -->
+    <div class="prod-card visible" id="skillmint" data-tags="edtech live">
+      <div class="card-top">
+        <div class="prod-status s-live"><div class="s-dot"></div>Live</div>
+        <div class="card-domain">EdTech · Content · Africa</div>
+      </div>
+      <div class="card-icon">
+  <img src="assets/skillmint-icon.png" alt="SkillMint Africa">
+</div>
+      <div class="card-desc">Digital skills and online income education platform targeting Nigerian and African audiences — teaching real skills that pay real money.</div>
+      <div class="card-features">
+        <div class="feat-item">Digital skills content on Facebook & TikTok</div>
+        <div class="feat-item">Online monetization training for African youth</div>
+        <div class="feat-item">Paid courses and digital products via Selar</div>
+      </div>
+      <div class="card-tech">
+        <span class="tech-tag">Facebook</span><span class="tech-tag">TikTok</span>
+        <span class="tech-tag">Selar</span><span class="tech-tag">Canva</span>
+      </div>
+      <!-- ╔══════════════════════════════════════════════╗
+           ║ UPDATE: replace with your real Facebook URL  ║
+           ╚══════════════════════════════════════════════╝ -->
+      <a href="https://www.facebook.com/share/p/18LVJdmm4i/" target="_blank" class="card-link">Visit on Facebook →</a>
+    </div>
+
+    <!-- STUDYLINK — wide -->
+    <div class="prod-card wide visible" id="studylink" data-tags="edtech live">
+      <div class="card-inner">
+        <div>
+          <div class="card-top">
+            <div class="prod-status s-live"><div class="s-dot"></div>Live — Hackathon Edition</div>
+            <div class="card-domain">EdTech · Web</div>
+          </div>
+          <div class="card-icon">🎓</div>
+          <div class="card-name">StudyLink FUD</div>
+          <div class="card-desc">A campus study group finder for Federal University Dutse — connecting students with study partners for smarter collaboration.</div>
+        </div>
+        <div>
+          <div class="card-features" style="margin-top:0">
+            <div class="feat-item">Neumorphic UI with dark & light mode</div>
+            <div class="feat-item">Splash screen, login/signup with validation</div>
+            <div class="feat-item">Student dashboard and group matching</div>
+            <div class="feat-item">Built for CRAI Hackathon 2025 — FUD</div>
+          </div>
+          <div class="card-tech">
+            <span class="tech-tag">HTML/CSS</span><span class="tech-tag">JavaScript</span>
+            <span class="tech-tag">Neumorphism</span><span class="tech-tag">Responsive</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="no-results" id="noResults">No products match this filter.</div>
+
+  </div><!-- /cards-grid -->
+</section>
+
+<footer>
+  <div class="footer-top">
+    <div><p class="footer-tagline">Rooted in Africa.<br>Built for the World.</p></div>
+    <div class="footer-links">
+      <div class="footer-col"><div class="footer-col-title">Company</div><a href="about.html">About</a><a href="founder.html">Founder</a><a href="contact.html">Contact</a></div>
+      <div class="footer-col"><div class="footer-col-title">Products</div><a href="#agrolingo">AgroLingo AI</a><a href="#agrochainx">AgroChainX</a><a href="#hifzmate">Hifz Mate</a><a href="#skillmint">SkillMint Africa</a></div>
+      <div class="footer-col"><div class="footer-col-title">Connect</div><a href="mailto:skillmintafrica@gmail.com">Email</a><a href="https://wa.me/2348153005657" target="_blank">WhatsApp</a><a href="https://github.com/GreenByteTechCo" target="_blank">GitHub</a></div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-legal"><span>© 2026 GreenByte Tech Co. All rights reserved.</span><span class="footer-reg">CAC BN 9467262 · TIN 2621972253588 · Gezawa, Kano State, Nigeria</span></div>
+    <div class="footer-made">Built in Nigeria 🇳🇬</div>
+  </div>
+</footer>
+
+<script src="shared.js"></script>
+<script>
+// ── PRODUCT FILTER with smooth animation ──
+function filterCards(tag, btn) {
+  // update active button
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const grid = document.getElementById('cardsGrid');
+  const cards = grid.querySelectorAll('.prod-card');
+  let visibleCount = 0;
+
+  cards.forEach(card => {
+    const tags = card.dataset.tags || '';
+    const matches = tag === 'all' || tags.includes(tag);
+
+    if (matches) {
+      card.classList.remove('hidden');
+      card.classList.add('visible');
+      visibleCount++;
+    } else {
+      card.classList.remove('visible');
+      card.classList.add('hidden');
+    }
+  });
+
+  const noResults = document.getElementById('noResults');
+  noResults.classList.toggle('show', visibleCount === 0);
+
+  // re-layout grid — reset featured span on filter
+  const featured = grid.querySelector('.prod-card.featured');
+  const wide = grid.querySelector('.prod-card.wide');
+  if (tag !== 'all') {
+    if (featured) featured.style.gridColumn = featured.classList.contains('hidden') ? '' : 'span 1';
+    if (wide) wide.style.gridColumn = wide.classList.contains('hidden') ? '' : 'span 1';
+  } else {
+    if (featured) featured.style.gridColumn = '';
+    if (wide) wide.style.gridColumn = '';
+  }
+}
+
+// Handle anchor link from other pages
+window.addEventListener('load', () => {
+  const hash = window.location.hash.replace('#', '');
+  if (hash) {
+    const el = document.getElementById(hash);
+    if (el) {
+      setTimeout(() => {
+        el.scrollIntoView({ behavior:'smooth', block:'center' });
+        el.style.borderColor = 'var(--teal)';
+        setTimeout(() => el.style.borderColor = '', 1500);
+      }, 300);
+    }
+  }
+});
+</script>
+</body>
+</html>

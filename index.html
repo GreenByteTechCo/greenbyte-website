@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GreenByte Tech Co — Rooted in Africa. Built for the World.</title>
+<meta name="description" content="GreenByte Tech Co is a global technology company headquartered in Kano, Nigeria. Building AI, blockchain, and software products that solve real problems for Africa and beyond.">
+
+<!-- ╔══════════════════════════════════════════════╗
+     ║  FAVICON — REPLACE WITH YOUR REAL ICON      ║
+     ║  Drop your logo as: assets/favicon.png      ║
+     ║  Drop your logo as: assets/favicon.ico      ║
+     ╚══════════════════════════════════════════════╝ -->
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="shortcut icon" href="assets/favicon.ico">
+<link rel="apple-touch-icon" href="assets/favicon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+
+/* ── HERO ── */
+.hero {
+  min-height:100vh; display:flex; align-items:center;
+  padding:140px 6% 100px; position:relative; overflow:hidden;
+}
+.hero-grid-bg {
+  position:absolute; inset:0;
+  background-image:
+    linear-gradient(rgba(45,125,210,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(45,125,210,0.035) 1px, transparent 1px);
+  background-size:64px 64px;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 40%, black 20%, transparent 100%);
+}
+.hero-orb {
+  position:absolute; border-radius:50%;
+  pointer-events:none; filter:blur(90px);
+}
+.hero-orb-1 {
+  width:650px; height:650px;
+  background:radial-gradient(circle, rgba(45,125,210,0.08), transparent 70%);
+  top:-160px; right:-80px;
+  animation:orbFloat 9s ease-in-out infinite alternate;
+}
+.hero-orb-2 {
+  width:380px; height:380px;
+  background:radial-gradient(circle, rgba(0,201,167,0.07), transparent 70%);
+  bottom:-80px; left:5%;
+  animation:orbFloat 12s ease-in-out infinite alternate-reverse;
+}
+@keyframes orbFloat {
+  from { transform:translate(0,0) scale(1); }
+  to { transform:translate(24px,-24px) scale(1.04); }
+}
+
+.hero-content { position:relative; z-index:2; max-width:740px; }
+
+.hero-eyebrow {
+  display:inline-flex; align-items:center; gap:10px;
+  background:rgba(45,125,210,0.08);
+  border:1px solid rgba(45,125,210,0.22);
+  border-radius:100px; padding:6px 16px 6px 8px;
+  margin-bottom:36px;
+  animation:revealUp 0.7s ease both;
+}
+.eyebrow-dot {
+  width:22px; height:22px;
+  background:rgba(0,201,167,0.15); border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+}
+.eyebrow-dot::after {
+  content:''; width:8px; height:8px; border-radius:50%; background:var(--teal);
+  animation:pulse 2s infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity:1; transform:scale(1); }
+  50% { opacity:0.5; transform:scale(0.85); }
+}
+.eyebrow-text {
+  font-family:'JetBrains Mono',monospace; font-size:0.69rem;
+  color:var(--blue-light); letter-spacing:0.1em; text-transform:uppercase;
+}
+
+.hero-h1 {
+  font-family:'Syne',sans-serif; font-weight:800;
+  font-size:clamp(3rem,6.5vw,6rem); line-height:1.02;
+  letter-spacing:-0.04em; color:var(--white); margin-bottom:26px;
+  animation:revealUp 0.7s 0.1s ease both;
+}
+.hero-h1 .accent-teal { color:var(--teal); }
+.hero-h1 .accent-dim { color:rgba(238,242,247,0.38); }
+
+.hero-sub {
+  font-size:clamp(0.98rem,1.6vw,1.12rem); color:var(--muted);
+  line-height:1.82; font-weight:300; max-width:510px; margin-bottom:48px;
+  animation:revealUp 0.7s 0.2s ease both;
+}
+
+.hero-actions {
+  display:flex; gap:14px; flex-wrap:wrap;
+  animation:revealUp 0.7s 0.3s ease both;
+}
+
+/* Floating product cards */
+.hero-float {
+  position:absolute; right:6%; top:50%; transform:translateY(-50%);
+  display:grid; grid-template-columns:1fr 1fr; gap:14px;
+  z-index:2; animation:revealUp 0.9s 0.4s ease both;
+}
+@media (max-width:1100px) { .hero-float { display:none; } }
+
+.float-card {
+  background:rgba(12,16,24,0.9);
+  border:1px solid var(--card-border);
+  border-radius:14px; padding:20px;
+  width:154px; backdrop-filter:blur(12px);
+  transition:border-color 0.2s, transform 0.25s;
+}
+.float-card:hover { border-color:var(--blue-border); transform:translateY(-4px); }
+.float-card.offset { margin-top:28px; }
+
+/* ╔══════════════════════════════════════════════╗
+   ║  PRODUCT ICONS — REPLACE src WITH YOUR REAL  ║
+   ║  product logos. Keep width/height at 32px.   ║
+   ╚══════════════════════════════════════════════╝ */
+.float-card-icon {
+  width:36px; height:36px; border-radius:9px;
+  background:var(--blue-dim); border:1px solid var(--blue-border);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.1rem; margin-bottom:10px; overflow:hidden;
+}
+.float-card-icon img { width:28px; height:28px; object-fit:contain; }
+
+.float-card-name {
+  font-family:'Syne',sans-serif; font-weight:700;
+  font-size:0.79rem; color:var(--white); margin-bottom:4px;
+}
+.float-card-tag {
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.58rem; color:var(--blue-light); letter-spacing:0.07em; text-transform:uppercase;
+}
+
+/* ── MARQUEE ── */
+.marquee-strip {
+  border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+  overflow:hidden; padding:14px 0; background:rgba(12,16,24,0.7);
+}
+.marquee-track {
+  display:flex; animation:marquee 32s linear infinite; width:max-content;
+}
+.marquee-item {
+  display:flex; align-items:center; gap:10px;
+  padding:0 36px; white-space:nowrap;
+  font-family:'JetBrains Mono',monospace; font-size:0.69rem;
+  color:var(--muted); letter-spacing:0.08em; text-transform:uppercase;
+}
+.marquee-item .hi { color:var(--teal); }
+.m-sep { width:4px; height:4px; border-radius:50%; background:var(--muted2); flex-shrink:0; }
+@keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* ── STATS ── */
+.stats-row {
+  display:grid; grid-template-columns:repeat(4,1fr);
+  border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+  background:var(--dark2);
+}
+.stat-cell {
+  padding:44px 36px;
+  border-right:1px solid var(--border);
+  transition:background 0.2s;
+}
+.stat-cell:last-child { border-right:none; }
+.stat-cell:hover { background:var(--blue-dim); }
+.stat-num {
+  font-family:'Syne',sans-serif; font-weight:800;
+  font-size:2.8rem; letter-spacing:-0.04em; color:var(--white);
+  line-height:1; margin-bottom:8px;
+}
+.stat-num sup { font-size:1.1rem; color:var(--teal); vertical-align:super; }
+.stat-lbl { font-size:0.78rem; color:var(--muted); line-height:1.5; font-weight:300; }
+
+/* ── PRODUCTS LIST ── */
+.products-section { padding:120px 6%; }
+.section-header {
+  display:flex; justify-content:space-between; align-items:flex-end;
+  margin-bottom:60px; flex-wrap:wrap; gap:20px;
+}
+
+.product-row {
+  display:grid; grid-template-columns:56px 1fr auto auto;
+  align-items:center; gap:28px;
+  padding:24px 28px;
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:12px; margin-bottom:3px;
+  transition:all 0.24s; text-decoration:none; position:relative; overflow:hidden;
+}
+.product-row::before {
+  content:''; position:absolute; left:0; top:0; bottom:0;
+  width:3px; background:linear-gradient(180deg, var(--teal), var(--blue));
+  transform:scaleY(0); transition:transform 0.28s; transform-origin:bottom;
+}
+.product-row:hover {
+  border-color:var(--blue-border); background:var(--card-bg2);
+  transform:translateX(5px);
+  box-shadow:0 4px 24px rgba(45,125,210,0.1);
+}
+.product-row:hover::before { transform:scaleY(1); }
+
+.prod-icon {
+  width:44px; height:44px; border-radius:10px;
+  background:var(--blue-dim); border:1px solid var(--blue-border);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.2rem; flex-shrink:0; overflow:hidden;
+}
+.prod-icon img { width:32px; height:32px; object-fit:contain; }
+.prod-name {
+  font-family:'Syne',sans-serif; font-weight:700;
+  font-size:0.97rem; color:var(--white); margin-bottom:3px;
+}
+.prod-desc { font-size:0.8rem; color:var(--muted); font-weight:300; }
+.prod-domain {
+  font-family:'JetBrains Mono',monospace; font-size:0.65rem;
+  color:var(--muted); letter-spacing:0.05em; text-transform:uppercase;
+  text-align:right; white-space:nowrap;
+}
+
+/* ── MISSION BLOCK ── */
+.mission-wrap { margin:0 6%; }
+.mission-block {
+  background:linear-gradient(135deg, #071428 0%, #0A1A2E 60%, #06101E 100%);
+  border:1px solid var(--blue-border);
+  border-radius:22px; padding:72px;
+  position:relative; overflow:hidden;
+}
+.mission-block::before {
+  content:''; position:absolute; top:-80px; right:-80px;
+  width:420px; height:420px; border-radius:50%;
+  background:radial-gradient(circle, rgba(45,125,210,0.08), transparent 70%);
+}
+.mission-block::after {
+  content:'"'; position:absolute; bottom:-60px; right:48px;
+  font-family:'Syne',sans-serif; font-size:18rem; color:rgba(45,125,210,0.05);
+  font-weight:800; line-height:1; pointer-events:none;
+}
+.mission-inner { position:relative; z-index:1; max-width:660px; }
+.mission-quote {
+  font-family:'Syne',sans-serif; font-weight:700;
+  font-size:clamp(1.5rem,3vw,2.3rem); color:var(--white);
+  line-height:1.25; letter-spacing:-0.02em; margin-bottom:24px;
+}
+.mission-quote .teal { color:var(--teal); }
+.mission-body { font-size:0.93rem; color:var(--muted); line-height:1.85; font-weight:300; margin-bottom:32px; }
+.mission-ctas { display:flex; gap:14px; flex-wrap:wrap; }
+
+/* ── WHY SECTION ── */
+.why-section { padding:120px 6%; background:var(--dark2); }
+.why-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:60px; }
+.why-card {
+  background:var(--card-bg); border:1px solid var(--card-border);
+  border-radius:16px; padding:34px; transition:all 0.25s;
+}
+.why-card:hover {
+  border-color:var(--blue-border); transform:translateY(-5px);
+  box-shadow:0 20px 40px rgba(45,125,210,0.12);
+}
+.why-num {
+  font-family:'JetBrains Mono',monospace; font-size:0.65rem;
+  color:rgba(45,125,210,0.45); letter-spacing:0.12em; margin-bottom:18px;
+}
+.why-icon { font-size:1.8rem; margin-bottom:14px; }
+.why-title { font-family:'Syne',sans-serif; font-weight:700; font-size:1rem; color:var(--white); margin-bottom:10px; }
+.why-text { font-size:0.83rem; color:var(--muted); line-height:1.75; font-weight:300; }
+
+/* ── CTA ── */
+.cta-strip { padding:100px 6%; text-align:center; position:relative; overflow:hidden; }
+.cta-strip::before {
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(ellipse 60% 80% at 50% 50%, rgba(45,125,210,0.05), transparent 70%);
+}
+.cta-h {
+  font-family:'Syne',sans-serif; font-weight:800;
+  font-size:clamp(2rem,4vw,3.2rem); color:var(--white);
+  letter-spacing:-0.03em; margin-bottom:18px; position:relative;
+}
+.cta-sub { font-size:0.97rem; color:var(--muted); font-weight:300; margin-bottom:42px; position:relative; }
+.cta-btns { display:flex; justify-content:center; gap:14px; flex-wrap:wrap; position:relative; }
+
+@keyframes revealUp {
+  from { opacity:0; transform:translateY(28px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+@media (max-width:900px) {
+  .stats-row { grid-template-columns:1fr 1fr; }
+  .stat-cell { border-bottom:1px solid var(--border); border-right:none; }
+  .stat-cell:nth-child(odd) { border-right:1px solid var(--border); }
+  .why-grid { grid-template-columns:1fr; }
+  .product-row { grid-template-columns:44px 1fr; }
+  .prod-domain, .prod-status { display:none; }
+  .mission-block { padding:44px 28px; margin:0 4%; }
+}
+@media (max-width:600px) {
+  .stats-row { grid-template-columns:1fr; }
+  .stat-cell { border-right:none; }
+  .hero { padding:120px 5% 80px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">
+    <!-- ╔══════════════════════════════════════════╗
+         ║ LOGO — Replace img src with your logo   ║
+         ║ File: assets/logo.png (transparent PNG) ║
+         ╚══════════════════════════════════════════╝ -->
+    <img src="assets/logo.png" alt="GreenByte" width="32" height="32"
+         style="border-radius:7px"
+         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <svg style="display:none" width="32" height="32" viewBox="0 0 32 32" fill="none">
+      <rect width="32" height="32" rx="7" fill="#111820"/>
+      <path d="M16 5.5C10.8 5.5 6.5 9.2 6.5 13.7C6.5 16.7 8.2 19.3 10.8 20.8V24.2L14.2 22.5C14.8 22.6 15.4 22.65 16 22.65C21.2 22.65 25.5 18.7 25.5 13.7C25.5 9.2 21.2 5.5 16 5.5Z" fill="#1A6B3C"/>
+      <circle cx="12" cy="13" r="1.4" fill="#00C9A7"/><circle cx="16" cy="11" r="1.4" fill="#00C9A7"/><circle cx="20" cy="13" r="1.4" fill="#00C9A7"/>
+      <line x1="12" y1="13" x2="16" y2="11" stroke="#00C9A7" stroke-width="0.8" opacity="0.5"/>
+      <line x1="16" y1="11" x2="20" y2="13" stroke="#00C9A7" stroke-width="0.8" opacity="0.5"/>
+    </svg>
+    <div>
+      <div class="logo-wordmark">Green<span>Byte</span></div>
+      <div class="logo-sub">Tech Co</div>
+    </div>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="products.html">Products</a></li>
+    <li><a href="founder.html">Founder</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+
+  <div class="nav-right">
+    <a href="contact.html" class="btn-primary btn-sm">Work With Us</a>
+  </div>
+  <button class="nav-burger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html" onclick="toggleMenu()">Home</a>
+  <a href="about.html" onclick="toggleMenu()">About</a>
+  <a href="products.html" onclick="toggleMenu()">Products</a>
+  <a href="founder.html" onclick="toggleMenu()">Founder</a>
+  <a href="contact.html" onclick="toggleMenu()">Contact</a>
+  <a href="contact.html" class="btn-primary" style="text-align:center;margin-top:8px" onclick="toggleMenu()">Work With Us</a>
+</div>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <div class="eyebrow-dot"></div>
+      <span class="eyebrow-text">CAC Registered · BN 9467262 · Kano, Nigeria</span>
+    </div>
+
+    <h1 class="hero-h1">
+      <span class="accent-teal">Technology</span><br>
+      with a<br>
+      <span class="accent-dim">purpose.</span>
+    </h1>
+
+    <p class="hero-sub">
+      GreenByte Tech Co is a global technology company headquartered in Nigeria —
+      building AI, blockchain, and software products that solve real problems
+      for African communities and the world.
+    </p>
+
+    <div class="hero-actions">
+      <a href="products.html" class="btn-primary">Our Products</a>
+      <a href="about.html" class="btn-ghost">Our Story</a>
+    </div>
+  </div>
+
+  <!-- Floating product cards -->
+  <div class="hero-float">
+    <div class="float-card">
+      <div class="float-card-icon">
+        <!-- Replace with: <img src="assets/agrolingo-icon.png" alt="AgroLingo"> -->
+        🌾
+      </div>
+      <div class="float-card-name">AgroLingo AI</div>
+      <div class="float-card-tag">AgriTech · AI</div>
+    </div>
+    <div class="float-card offset">
+      <div class="float-card-icon">📖</div>
+      <div class="float-card-name">Hifz Mate</div>
+      <div class="float-card-tag">EdTech · Mobile</div>
+    </div>
+    <div class="float-card">
+      <div class="float-card-icon">⛓️</div>
+      <div class="float-card-name">AgroChainX</div>
+      <div class="float-card-tag">Blockchain · Web3</div>
+    </div>
+    <div class="float-card offset">
+      <div class="float-card-icon">💡</div>
+      <div class="float-card-name">SkillMint</div>
+      <div class="float-card-tag">EdTech · Content</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MARQUEE ── -->
+<div class="marquee-strip">
+  <div class="marquee-track">
+    <div class="marquee-item"><span class="hi">AI & Machine Learning</span><div class="m-sep"></div></div>
+    <div class="marquee-item">Blockchain & Web3<div class="m-sep"></div></div>
+    <div class="marquee-item"><span class="hi">Mobile Development</span><div class="m-sep"></div></div>
+    <div class="marquee-item">AgriTech Solutions<div class="m-sep"></div></div>
+    <div class="marquee-item"><span class="hi">Islamic EdTech</span><div class="m-sep"></div></div>
+    <div class="marquee-item">Digital Skills Africa<div class="m-sep"></div></div>
+    <div class="marquee-item"><span class="hi">Nigeria → Global</span><div class="m-sep"></div></div>
+    <div class="marquee-item">CAC Registered · 2026<div class="m-sep"></div></div>
+    <div class="marquee-item"><span class="hi">AI & Machine Learning</span><div class="m-sep"></div></div>
+    <div class="marquee-item">Blockchain & Web3<div class="m-sep"></div></div>
+    <div class="marquee-item"><span class="hi">Mobile Development</span><div class="m-sep"></div></div>
+    <div class="marquee-item">AgriTech Solutions<div class="m-sep"></div></div>
+    <div class="marquee-item"><span class="hi">Islamic EdTech</span><div class="m-sep"></div></div>
+    <div class="marquee-item">Digital Skills Africa<div class="m-sep"></div></div>
+    <div class="marquee-item"><span class="hi">Nigeria → Global</span><div class="m-sep"></div></div>
+    <div class="marquee-item">CAC Registered · 2026<div class="m-sep"></div></div>
+  </div>
+</div>
+
+<!-- ── STATS ── -->
+<div class="stats-row">
+  <div class="stat-cell reveal">
+    <div class="stat-num">5<sup>+</sup></div>
+    <div class="stat-lbl">Products across AI, Blockchain & Mobile</div>
+  </div>
+  <div class="stat-cell reveal">
+    <div class="stat-num">3<sup>+</sup></div>
+    <div class="stat-lbl">Technology Domains — AI, Web3, Software</div>
+  </div>
+  <div class="stat-cell reveal">
+    <div class="stat-num">1<sup>B+</sup></div>
+    <div class="stat-lbl">People in our African & global target market</div>
+  </div>
+  <div class="stat-cell reveal">
+    <div class="stat-num">2026</div>
+    <div class="stat-lbl">Founded in Gezawa, Kano State, Nigeria</div>
+  </div>
+</div>
+
+<!-- ── PRODUCTS ── -->
+<section class="products-section">
+  <div class="section-header">
+    <div>
+      <div class="section-label">What We Build</div>
+      <h2 class="section-title">Products that matter.</h2>
+    </div>
+    <a href="products.html" class="btn-ghost btn-sm">View All →</a>
+  </div>
+
+  <!-- ╔══════════════════════════════════════════════════╗
+       ║ PRODUCT ICONS: replace the emoji in .prod-icon  ║
+       ║ with: <img src="assets/agrolingo-icon.png">      ║
+       ╚══════════════════════════════════════════════════╝ -->
+  <a href="products.html#agrolingo" class="product-row reveal">
+    <div class="prod-icon">🌾</div>
+    <div>
+      <div class="prod-name">AgroLingo AI</div>
+      <div class="prod-desc">Multilingual AI assistant (Hausa/English) for smallholder farmers — real-time agricultural intelligence.</div>
+    </div>
+    <div class="prod-domain">AgriTech · AI</div>
+    <div class="prod-status s-building"><div class="s-dot"></div>Building</div>
+  </a>
+
+  <a href="products.html#agrochainx" class="product-row reveal">
+    <div class="prod-icon">⛓️</div>
+    <div>
+      <div class="prod-name">AgroChainX</div>
+      <div class="prod-desc">Blockchain agri-ecosystem — farm-to-consumer traceability, smart contracts, farmer digital identity.</div>
+    </div>
+    <div class="prod-domain">Blockchain · Web3</div>
+    <div class="prod-status s-building"><div class="s-dot"></div>Building</div>
+  </a>
+
+  <a href="products.html#hifzmate" class="product-row reveal">
+    <div class="prod-icon">📖</div>
+    <div>
+      <div class="prod-name">Hifz Mate</div>
+      <div class="prod-desc">AI-powered Qur'an memorization app — voice recognition, spaced repetition, Tajweed feedback.</div>
+    </div>
+    <div class="prod-domain">EdTech · Mobile</div>
+    <div class="prod-status s-building"><div class="s-dot"></div>Building</div>
+  </a>
+
+  <!-- ╔══════════════════════════════════════════════╗
+       ║ SOCIAL LINKS — update href below            ║
+       ╚══════════════════════════════════════════════╝ -->
+  <a href="https://facebook.com/SkillMintAfrica" target="_blank" class="product-row reveal">
+    <div class="prod-icon">💡</div>
+    <div>
+      <div class="prod-name">SkillMint Africa</div>
+      <div class="prod-desc">Digital skills and online income education platform for Nigerian and African audiences.</div>
+    </div>
+    <div class="prod-domain">EdTech · Content</div>
+    <div class="prod-status s-live"><div class="s-dot"></div>Live</div>
+  </a>
+
+  <a href="products.html#studylink" class="product-row reveal">
+    <div class="prod-icon">🎓</div>
+    <div>
+      <div class="prod-name">StudyLink FUD</div>
+      <div class="prod-desc">Campus study group finder for Federal University Dutse — neumorphic UI, group matching.</div>
+    </div>
+    <div class="prod-domain">EdTech · Web</div>
+    <div class="prod-status s-live"><div class="s-dot"></div>Live</div>
+  </a>
+</section>
+
+<!-- ── MISSION ── -->
+<div class="mission-wrap">
+  <div class="mission-block reveal">
+    <div class="mission-inner">
+      <div class="section-label" style="margin-bottom:22px">Our Mission</div>
+      <div class="mission-quote">
+        "We don't wait for Silicon Valley<br>to solve Africa's problems.<br>
+        We build the solutions <span class="teal">ourselves.</span>"
+      </div>
+      <p class="mission-body">
+        GreenByte Tech Co was founded on a simple but powerful belief — that a young
+        computer scientist from northern Nigeria can build products that compete globally.
+        Every product we ship is rooted in Africa's real needs and built to the
+        highest international standards.
+      </p>
+      <div class="mission-ctas">
+        <a href="about.html" class="btn-primary">Our Story</a>
+        <a href="founder.html" class="btn-ghost">Meet the Founder</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── WHY ── -->
+<section class="why-section">
+  <div class="section-label">Why GreenByte</div>
+  <h2 class="section-title">Built different. On purpose.</h2>
+  <div class="why-grid">
+    <div class="why-card reveal">
+      <div class="why-num">01</div>
+      <div class="why-icon">🎯</div>
+      <div class="why-title">Impact Over Hype</div>
+      <div class="why-text">Every product must solve a real, measurable problem for real people. We don't build for demos — we build for deployment and lives changed.</div>
+    </div>
+    <div class="why-card reveal">
+      <div class="why-num">02</div>
+      <div class="why-icon">🌍</div>
+      <div class="why-title">Africa-Rooted, Globally Competitive</div>
+      <div class="why-text">Our context is African. Our standards are global. We refuse the false choice between serving our communities and competing with the world's best.</div>
+    </div>
+    <div class="why-card reveal">
+      <div class="why-num">03</div>
+      <div class="why-icon">⚡</div>
+      <div class="why-title">AI-First by Design</div>
+      <div class="why-text">Intelligence is built into our products from the ground up — from Hausa NLP to blockchain smart contracts, we engineer the future.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="cta-strip">
+  <h2 class="cta-h">Ready to build something<br>that matters?</h2>
+  <p class="cta-sub">Partner, investor, grant organization, or client — let's talk.</p>
+  <div class="cta-btns">
+    <a href="contact.html" class="btn-primary">Get In Touch</a>
+    <a href="products.html" class="btn-ghost">Explore Products</a>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="logo-wordmark" style="font-size:1.05rem;font-family:'Syne',sans-serif;font-weight:800;color:var(--white)">Green<span style="color:var(--teal)">Byte</span></div>
+      <p class="footer-tagline" style="margin-top:8px">Rooted in Africa.<br>Built for the World.</p>
+      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+        <!-- ╔══════════════════════════════════════╗
+             ║ SOCIAL LINKS — update hrefs here     ║
+             ╚══════════════════════════════════════╝ -->
+        <a href="https://github.com/GreenByteTechCo" target="_blank" style="font-size:0.75rem;color:var(--muted);text-decoration:none;border:1px solid var(--border-s);padding:6px 12px;border-radius:6px;transition:color 0.2s">GitHub</a>
+        <a href="https://linkedin.com/company/greenbyte-tech-co" target="_blank" style="font-size:0.75rem;color:var(--muted);text-decoration:none;border:1px solid var(--border-s);padding:6px 12px;border-radius:6px;transition:color 0.2s">LinkedIn</a>
+        <a href="https://twitter.com/GreenByteTech" target="_blank" style="font-size:0.75rem;color:var(--muted);text-decoration:none;border:1px solid var(--border-s);padding:6px 12px;border-radius:6px;transition:color 0.2s">Twitter/X</a>
+      </div>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <div class="footer-col-title">Company</div>
+        <a href="about.html">About Us</a>
+        <a href="founder.html">Founder</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Products</div>
+        <a href="products.html#agrolingo">AgroLingo AI</a>
+        <a href="products.html#agrochainx">AgroChainX</a>
+        <a href="products.html#hifzmate">Hifz Mate</a>
+        <a href="https://facebook.com/SkillMintAfrica" target="_blank">SkillMint Africa</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Connect</div>
+        <a href="mailto:skillmintafrica@gmail.com">Email Us</a>
+        <a href="https://wa.me/2348153005657" target="_blank">WhatsApp</a>
+        <a href="https://github.com/GreenByteTechCo" target="_blank">GitHub</a>
+        <a href="https://linkedin.com/company/greenbyte-tech-co" target="_blank">LinkedIn</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-legal">
+      <span>© 2026 GreenByte Tech Co. All rights reserved.</span>
+      <span class="footer-reg">CAC BN 9467262 · TIN 2621972253588 · Gezawa, Kano State, Nigeria</span>
+    </div>
+    <div class="footer-made">Built in Nigeria 🇳🇬</div>
+  </div>
+</footer>
+
+<script src="shared.js"></script>
+</body>
+</html>
